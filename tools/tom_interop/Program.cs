@@ -252,11 +252,86 @@ copyCmd.SetHandler((string input, string output) =>
     }
 }, inOpt, out2Opt);
 
+// ---------- query ----------
+var queryCmd = new Command("query", "Execute a DAX query against a live semantic model");
+var queryWsOpt = new Option<string>("--workspace", "Workspace name") { IsRequired = true };
+var queryDsOpt = new Option<string>("--dataset", "Dataset name") { IsRequired = true };
+var queryDaxOpt = new Option<string>("--dax", "DAX query to execute") { IsRequired = true };
+var queryTokenOpt = new Option<string?>("--token", () => null, "Access token (optional, uses interactive auth if not provided)");
+
+queryCmd.AddOption(queryWsOpt);
+queryCmd.AddOption(queryDsOpt);
+queryCmd.AddOption(queryDaxOpt);
+queryCmd.AddOption(queryTokenOpt);
+
+queryCmd.SetHandler((string ws, string ds, string dax, string? token) =>
+{
+    try
+    {
+        var cs = DaxQueryExecutor.BuildConnectionString(ws, ds, token);
+        var result = DaxQueryExecutor.ExecuteQueryAsJson(cs, dax);
+        Console.WriteLine(result);
+        Environment.Exit(0);
+    }
+    catch (Exception ex)
+    {
+        Console.Error.WriteLine(ex.Message);
+        Environment.Exit(1);
+    }
+}, queryWsOpt, queryDsOpt, queryDaxOpt, queryTokenOpt);
+
+// ---------- get-dax-docs ----------
+var getDaxDocsCmd = new Command("get-dax-docs", "Get all DAX documentation (measures, calc columns, calc tables)");
+getDaxDocsCmd.AddOption(queryWsOpt);
+getDaxDocsCmd.AddOption(queryDsOpt);
+getDaxDocsCmd.AddOption(queryTokenOpt);
+
+getDaxDocsCmd.SetHandler((string ws, string ds, string? token) =>
+{
+    try
+    {
+        var cs = DaxQueryExecutor.BuildConnectionString(ws, ds, token);
+        var result = DaxQueryExecutor.GetDaxDocumentation(cs);
+        Console.WriteLine(result);
+        Environment.Exit(0);
+    }
+    catch (Exception ex)
+    {
+        Console.Error.WriteLine(ex.Message);
+        Environment.Exit(1);
+    }
+}, queryWsOpt, queryDsOpt, queryTokenOpt);
+
+// ---------- get-model-metadata ----------
+var getMetadataCmd = new Command("get-model-metadata", "Get full model metadata (tables, columns, measures, relationships)");
+getMetadataCmd.AddOption(queryWsOpt);
+getMetadataCmd.AddOption(queryDsOpt);
+getMetadataCmd.AddOption(queryTokenOpt);
+
+getMetadataCmd.SetHandler((string ws, string ds, string? token) =>
+{
+    try
+    {
+        var cs = DaxQueryExecutor.BuildConnectionString(ws, ds, token);
+        var result = DaxQueryExecutor.GetFullModelMetadata(cs);
+        Console.WriteLine(result);
+        Environment.Exit(0);
+    }
+    catch (Exception ex)
+    {
+        Console.Error.WriteLine(ex.Message);
+        Environment.Exit(1);
+    }
+}, queryWsOpt, queryDsOpt, queryTokenOpt);
+
 // wire up
 root.AddCommand(fabricCmd);
 root.AddCommand(exportCmd);
 root.AddCommand(inspectCmd);
 root.AddCommand(validateCmd);
 root.AddCommand(copyCmd);
+root.AddCommand(queryCmd);
+root.AddCommand(getDaxDocsCmd);
+root.AddCommand(getMetadataCmd);
 
 return await root.InvokeAsync(args);
