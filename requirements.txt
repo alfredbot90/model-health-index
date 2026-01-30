@@ -1,0 +1,40 @@
+# Core dependencies
+python-dotenv>=1.0.0
+requests>=2.31.0
+keyring>=24.0.0
+
+# API framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+
+# MCP server
+fastmcp>=0.2.0
+
+# Data processing
+pandas>=2.1.0
+numpy>=1.24.0
+tqdm>=4.66.0
+
+# PDF generation (from V3)
+reportlab>=4.0.0
+matplotlib>=3.8.0
+
+# TMDL/TMSL parsing
+lxml>=5.0.0
+
+# Authentication
+azure-cli-core>=2.55.0
+msal>=1.26.0
+
+# Optional: XMLA support
+# pyadomd>=1.0.0  # Uncomment if using XMLA endpoints
+
+# Development tools
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+black>=23.12.0
+mypy>=1.8.0
+
+# Web UI (optional)
+# streamlit>=1.30.0  # Uncomment for Streamlit UI

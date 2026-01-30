@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Cache
+cache/
+tmdl_exports/
+reports_output/
+*.pbix
+*.tmdl
+*.tmsl
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# .NET
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# Secrets
+*.pfx
+*.key
+credentials.json
+token.json
